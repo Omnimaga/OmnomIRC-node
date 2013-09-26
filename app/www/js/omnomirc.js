@@ -318,7 +318,8 @@
 		pluginSandbox = {
 			$: window.jQuery,
 			jQuery: window.jQuery,
-			$o: $o
+			$o: window.OmnomIRC,
+			OmnomIRC: window.OmnomIRC
 		},
 		currentPlugin = 0,
 		Sandbox = function(sandbox){
@@ -695,6 +696,12 @@
 						$('#tabs-scroll-left').removeClass('disabled');
 					}
 				}
+			},
+			templates: {
+				user: '($origin) &lt;$name&gt;',
+				timestamp: '[<abbr class="date" title="$time">$time</abbr>]',
+				message: '$message',
+				line: '<span class="cell date_cell">{timestamp}</span><span class="cell">{user}	{message}</span>'
 			},
 			tabs: {
 				add: function(name){
