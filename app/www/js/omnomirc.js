@@ -1134,6 +1134,13 @@
 			type: 'number',
 			val: 10
 		},
+		showorigin: {
+			type: 'boolean',
+			val: false,
+			callback: function(v,s,r){
+				
+			}
+		},
 		theme: {
 			type: 'select',
 			val: 'default',
