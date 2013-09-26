@@ -330,6 +330,11 @@
 			for(i in sandbox){
 				o[i] = sandbox[i];
 			}
+			if(!exists(o.fragment)){
+				o.fragment = function(){
+					return document.createDocumentFragment();
+				};
+			}
 			return o;
 		},
 		runHook = function(name,args){
