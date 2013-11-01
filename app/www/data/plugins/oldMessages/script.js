@@ -1,4 +1,4 @@
-var oldMessagesKeyHandle = function(e){
+$('#input').data('oldMessagesKeyHandle',function(e){
 	var room = $o.ui.tabs.current().name,
 		oldMessages = ($.localStorage('oldMessages-'+room)||[]),
 		input = $('#input');
@@ -25,9 +25,9 @@ var oldMessagesKeyHandle = function(e){
 			break;
 		}
 	}
-}
+});
 hook('start',function(){
-	input.keydown(oldMessagesKeyHandle).data({
+	$('#input').keydown($('#input').data('oldMessagesKeyHandle')).data({
 		'oldMessageCounter':1,
 		'currentMessage':''
 	});
@@ -50,9 +50,8 @@ hook('send',function(msg,room){
 	}
 	$.localStorage('oldMessages-'+room,oldMessages);
 	$('#input').data('oldMessageCounter',oldMessages.length);
-	//$o.event('OldMessages','added old message');
 	return true;
 });
 hook('stop',function(){
-	$('#input').off(oldMessagesKeyHandle);
+	$('#input').off($('#input').data('oldMessagesKeyHandle'));
 });
