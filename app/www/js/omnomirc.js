@@ -530,6 +530,7 @@
 				if(exists(plugins[name])){
 					var plugin = plugins[name],
 						hook = function(){
+							console.log('hook',arguments);
 							var h = arguments[0],
 								f = arguments[1],
 								fn;
