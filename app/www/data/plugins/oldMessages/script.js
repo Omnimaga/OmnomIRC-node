@@ -25,12 +25,16 @@ $('#input').data('oldMessagesKeyHandle',function(e){
 			break;
 		}
 	}
-});
+}).data('oldMessagesAlreadyStarted',false);
 hook('start',function(){
-	$('#input').keydown($('#input').data('oldMessagesKeyHandle')).data({
-		'oldMessageCounter':1,
-		'currentMessage':''
-	});
+	if(!$('#input').data('oldMessagesAlreadyStarted')){
+		$o.event('oldMessages','registered');
+		$('#input').keydown($('#input').data('oldMessagesKeyHandle')).data({
+			'oldMessageCounter':1,
+			'currentMessage':'',
+			'oldMessagesAlreadyStarted':true
+		});
+	}
 });
 hook('tabswitch',function(newT){
 	var room = newT.name,
@@ -53,5 +57,6 @@ hook('send',function(msg,room){
 	return true;
 });
 hook('stop',function(){
-	$('#input').off($('#input').data('oldMessagesKeyHandle'));
+	$o.event('oldMessages','stopped');
+	$('#input').off($('#input').data('oldMessagesKeyHandle')).data('oldMessagesAlreadyStarted',false);
 });
