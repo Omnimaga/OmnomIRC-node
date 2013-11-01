@@ -58,5 +58,5 @@ hook('send',function(msg,room){
 });
 hook('stop',function(){
 	$o.event('oldMessages','stopped');
-	$('#input').off($('#input').data('oldMessagesKeyHandle')).data('oldMessagesAlreadyStarted',false);
+	$('#input').off('keydown',$('#input').data('oldMessagesKeyHandle')).data('oldMessagesAlreadyStarted',false);
 });
