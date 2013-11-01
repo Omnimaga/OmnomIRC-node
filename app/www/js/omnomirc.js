@@ -528,26 +528,28 @@
 			},
 			start: function(name){
 				if(exists(plugins[name])){
-					var plugin = plugins[name];
+					var plugin = plugins[name],
+						hook = function(){
+							var h = arguments[0],
+								f = arguments[1],
+								fn;
+							if( h == 'start' || h == 'stop'){
+								fn = function(){
+									if(arguments[0] == name){
+										f.apply(this,arguments)
+									}
+								}
+							}else{
+								fn = f;
+							}
+							$o.hook.apply($o,[h,fn]);
+						};
 					if(plugin.started){
 						$o.plugin.stop(name);
 					}
 					event('Starting plugin '+name);
-					pluginSandbox.hook = pluginSandbox.$o.hook = function(){
-						var h = arguments[0],
-							f = arguments[1],
-							fn;
-						if( h == 'start' || h == 'stop'){
-							fn = function(){
-								if(arguments[0] == name){
-									f.apply(this,arguments)
-								}
-							}
-						}else{
-							fn = f;
-						}
-						$o.hook.apply($o,[h,fn]);
-					};
+					pluginSandbox.hook = hook;
+					pluginSandbox.$o.hook = hook;
 					if(!plugin.loaded){
 						$.ajax('data/plugins/'+name+'/script.js',{
 							dataType: 'text',
