@@ -1,36 +1,38 @@
-hook('start',function(name){
-	$('#input').keydown(function oldMessagesKeyHandle(e){
-		var room = $o.ui.tabs.current().name,
-			oldMessages = ($.localStorage('oldMessages-'+room)||[]);
-		if($('#input').data('oldMessageCounter')==oldMessages.length){
-			$('#input').data('currentMessage',$('#input').val());
+var oldMessagesKeyHandle = function(e){
+	var room = $o.ui.tabs.current().name,
+		oldMessages = ($.localStorage('oldMessages-'+room)||[]),
+		input = $('#input');
+	if(input.data('oldMessageCounter')==oldMessages.length){
+		input.data('currentMessage',input.val());
+	}
+	if(oldMessages.length!=0){
+		switch(e.which){
+			case 38:
+				if(input.data('oldMessageCounter')!=0){
+					input.data('oldMessageCounter',input.data('oldMessageCounter')-1);
+				}
+				input.val(oldMessages[input.data('oldMessageCounter')]);
+			break;
+			case 40:
+				if(input.data('oldMessageCounter')!=oldMessages.length){
+					input.data('oldMessageCounter',input.data('oldMessageCounter')+1);
+				}
+				if(input.data('oldMessageCounter')==oldMessages.length){
+					input.val($('#input').data('currentMessage'));
+				}else{
+					input.val(oldMessages[input.data('oldMessageCounter')]);
+				}
+			break;
 		}
-		if(oldMessages.length!=0){
-			switch(e.which){
-				case 38:
-					if($('#input').data('oldMessageCounter')!=0){
-						$('#input').data('oldMessageCounter',$('#input').data('oldMessageCounter')-1);
-					}
-					$('#input').val(oldMessages[$('#input').data('oldMessageCounter')]);
-				break;
-				case 40:
-					if($('#input').data('oldMessageCounter')!=oldMessages.length){
-						$('#input').data('oldMessageCounter',$('#input').data('oldMessageCounter')+1);
-					}
-					if($('#input').data('oldMessageCounter')==oldMessages.length){
-						$('#input').val($('#input').data('currentMessage'));
-					}else{
-						$('#input').val(oldMessages[$('#input').data('oldMessageCounter')]);
-					}
-				break;
-			}
-		}
-	}).data({
+	}
+}
+hook('start',function(){
+	input.keydown(oldMessagesKeyHandle).data({
 		'oldMessageCounter':1,
 		'currentMessage':''
 	});
 });
-hook('tabswitch',function(newT,oldT){
+hook('tabswitch',function(newT){
 	var room = newT.name,
 		oldMessages = ($.localStorage('oldMessages-'+room)||[]);
 	$('#input').data('oldMessageCounter',oldMessages.length);
@@ -51,6 +53,6 @@ hook('send',function(msg,room){
 	//$o.event('OldMessages','added old message');
 	return true;
 });
-hook('stop',function(name){
+hook('stop',function(){
 	$('#input').off(oldMessagesKeyHandle);
 });
