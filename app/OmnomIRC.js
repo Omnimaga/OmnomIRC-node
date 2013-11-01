@@ -161,6 +161,7 @@ if(cluster.isMaster){
 				if(typeof irc != 'undefined'){
 					msg = JSON.parse(msg);
 					if(typeof msg.message != 'udefined'){
+						msg.message = msg.message.replace(/[\r]/g,'');
 						irc.say(msg.room,'('+options.origins[msg.origin][0]+')'+'<'+msg.from+'> '+msg.message);
 					}
 				}
@@ -366,6 +367,7 @@ if(cluster.isMaster){
 			}
 		});
 		socket.on('message',function(data){
+			data.message = data.message.
 			logger.debug('message sent to '+data.room);
 			io.sockets.in(data.room).emit('message',data);
 			process.send('M'+JSON.stringify(data));
@@ -388,6 +390,7 @@ if(cluster.isMaster){
 		socket.on('auth',function(data){
 			logger.info(data.nick+' registered');
 			// TODO - authorize
+			data.nick = data.nick.replace(/[\r\n]/g,'');
 			socket.set('nick',data.nick.substr(0,12));
 			socket.emit('authorized',{
 				nick: data.nick.substr(0,12)
