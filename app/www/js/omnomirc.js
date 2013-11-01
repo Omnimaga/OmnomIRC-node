@@ -1222,8 +1222,7 @@
 								},
 								$: window.jQuery,
 								$o: window.OmnomIRC,
-								OmnomIRC: window.OmnomIRC,
-								test: "test"
+								OmnomIRC: window.OmnomIRC
 							};
 							runInSandbox(data,sandbox);
 							runHook('themechange',[v]);
