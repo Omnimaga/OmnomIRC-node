@@ -8,11 +8,11 @@ hook('message',function(msg,from,room,origin){
 		return 1;
 	};
 	if(origins('OmnomIRC')==origin){
-		var parseMsg = $($('#content-list').children().last().children("span")[1]).html(),
+		var parseMsg = $($('#content-list').children().last().children("span").get(1)).html(),
 			nick,
 			before,
 			after,
-			newHTML;
+			newHTML = $(fragment());
 		if(parseMsg.substring(24,28)=="&lt;"){
 			nick = parseMsg.substring(28,parseMsg.indexOf("&gt;",29));
 			before = parseMsg.substring(0,28);
@@ -23,12 +23,11 @@ hook('message',function(msg,from,room,origin){
 			after = parseMsg.substring(parseMsg.indexOf("&nbsp;",31));
 		}
 		if(nick.indexOf('<a')==-1){
-			newHTML = $(fragment())
-				.append(before)
+			newHTML.append(before)
 				.append(
 					$('<a>')
-							.attr('href','http:/'+'/www.omnimaga.org/index.php?action=ezportal;sa=page;p=13&userSearch='+nick)
-							.text(nick)
+						.attr('href','http:/'+'/www.omnimaga.org/index.php?action=ezportal;sa=page;p=13&userSearch='+nick)
+						.text(nick)
 				).append(after);
 			$o.event('links',newHTML.html());
 			//$($('#content-list').children().last().children("span").get(1)).html(newHTML);
