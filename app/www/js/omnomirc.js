@@ -533,7 +533,7 @@
 						$o.plugin.stop(name);
 					}
 					event('Starting plugin '+name);
-					pluginSandbox.$o.hook = function(){
+					pluginSandbox.hook = pluginSandbox.$o.hook = function(){
 						var h = arguments[0],
 							f = arguments[1],
 							fn;
