@@ -1,6 +1,7 @@
 /*
 	OmnomIRC COPYRIGHT 2010,2011 Netham45
 	OmnomIRC3 rewrite COPYRIGHT 2013 Nathaniel 'Eeems' van Diepen
+	    on behalf of Omnimaga.org
 
 	This file is part of OmnomIRC.
 
